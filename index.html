@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Dancing+Script:wght@400;600;700&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
     :root {
@@ -645,7 +646,6 @@
     }
     .gallery-item:hover img { transform: scale(1.04); }
     .gallery-caption {
-	  display: none;
       position: absolute;
       bottom: 0; left: 0; right: 0;
       padding: .7rem .9rem;
@@ -728,16 +728,6 @@
   color: white;
   box-shadow: 0 4px 20px rgba(201,152,58,.35);
   
-  /* ПОДКЛЮЧАЕМ ПАССИВНЫЙ ЭФФЕКТ: */
-  /* Название анимации: pulse, время круга: 2.5 секунды, крутится бесконечно (infinite) */
-  animation: pulse 2.5s infinite ease-in-out; 
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--ochre), var(--gold));
-  color: white;
-  box-shadow: 0 4px 20px rgba(201,152,58,.35);
-  
   /* Включаем пассивный эффект дыхания */
   animation: weddingPulse 3s infinite ease-in-out; 
   
@@ -783,9 +773,8 @@
 /* 2. Эффект блика: он быстро пробегает за 1 секунду, а остальные 3 секунды "отдыхает" */
 @keyframes weddingFlare {
   0% { left: -150%; }
-  40% { left: 150%; }   /* Быстро пролетел слева направо */
-  100% { left: 150%; }  /* Пауза в движении */
-}
+  40% { left: 150%; }
+  100% { left: 150%; }
 }
 
     .btn-outline {
@@ -888,33 +877,37 @@
 
 <!-- ══════════ HERO ══════════ -->
 <section id="hero">
-  <div class="watercolor-bg">
-    <div class="wc-blob" style="width:400px;height:350px;top:5%;left:-8%;background:rgba(217,206,232,.45)"></div>
-    <div class="wc-blob" style="width:300px;height:280px;bottom:10%;right:-4%;background:rgba(242,200,176,.4)"></div>
-    <div class="wc-blob" style="width:200px;height:200px;top:55%;left:55%;background:rgba(232,217,192,.35)"></div>
-  </div>
+    <div class="watercolor-bg">
+        <div class="wc-blob" style="width:400px; height:350px; top:5%; left:-8%; background:rgba(217,206,232,0.45)"></div>
+        <div class="wc-blob" style="width:300px; height:280px; bottom:10%; right:-4%; background:rgba(242,200,176,0.4)"></div>
+        <div class="wc-blob" style="width:200px; height:200px; top:55%; left:55%; background:rgba(232,217,192,0.35)"></div>
+    </div>
 
-  <p class="hero-dear fade-in">Дорогие гости...</p>
+    <p class="hero-dear fade-in">Дорогие гости...</p>
+    <p class="hero-dear fade-in">С радостью приглашаем вас на нашу свадьбу</p>
+    
+    <div class="hero-initials fade-in" style="transition-delay: .15s">
+        S <span class="ampersand">&amp;</span> B
+    </div>
+    
+    <div class="brush-line fade-in" style="transition-delay: .2s"></div>
+    
+    <p class="hero-names fade-in" style="transition-delay: .25s">Сергей &amp; Бек-Айым</p>
 
-  <div class="hero-initials fade-in" style="transition-delay:.15s">
-    S <span class="ampersand">&</span> B
-  </div>
-  <div class="brush-line fade-in" style="transition-delay:.2s"></div>
-
-  <p class="hero-names fade-in" style="transition-delay:.25s">Сергей &amp; Бек-Айым</p>
-  <p class="hero-date fade-in" style="transition-delay:.3s">15 августа 2026 года</p>
-  <p class="hero-date fade-in" style="transition-delay:.3s">Время 18:00</p>
-
-  <p class="hero-quote fade-in" style="transition-delay:.4s">
-    Любовь — это не то, что находишь. Любовь — это то, что ты строишь вместе.
-  </p>
-
-
-
-<a class="btn btn-primary" href="#rsvp-section" onclick="document.getElementById('rsvp-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); event.preventDefault();" aria-label="Перейти к подтверждению присутствия" style="margin-top: 30px; display: inline-block;">
-  Подтвердить присутствие
-  <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
-</a>
+    <div class="hero-card">
+        <p class="hero-date fade-in" style="transition-delay: .3s">15 августа 2026 года</p>
+        <p class="hero-date fade-in" style="transition-delay: .3s">Время 17:00</p>
+        
+        <p class="hero-quote fade-in" style="transition-delay: .4s">
+            « Любовь — это не то, что находишь. Любовь — это то, что ты строишь вместе. »
+        </p>
+        
+        <a class="btn btn-primary" href="#rsvp-section" onclick="document.getElementById('rsvp-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); event.preventDefault();" aria-label="Перейти к подтверждению присутствия" style="margin-top: 30px; display: inline-block;">
+            Подтвердить присутствие
+            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+        </a>
+    </div>
+    </section>
 
 
 <!-- ══════════ COUNTDOWN ══════════ -->
@@ -1084,10 +1077,14 @@
       let particleInterval = null;
       player.volume = 0.1;
 
+      let autopaused = false;
+
       function togglePlay() {
         if (player.paused) {
+          autopaused = false;
           player.play().then(() => updateUI(true)).catch(err => console.log(err));
         } else {
+          autopaused = false; // пользователь явно поставил паузу — не возобновлять автоматически
           player.pause();
           updateUI(false);
         }
@@ -1176,8 +1173,32 @@
       }
 
       document.addEventListener('click', forceAudioPlay);
-      document.addEventListener('scroll', forceAudioPlay);
       document.addEventListener('touchstart', forceAudioPlay);
+
+      // ── Tab visibility & window focus/blur ──
+      function handleTabHide() {
+        if (!player.paused) {
+          player.pause();
+          updateUI(false);
+          autopaused = true;
+        }
+      }
+
+      function handleTabShow() {
+        if (autopaused) {
+          player.play().then(() => updateUI(true)).catch(() => {});
+          autopaused = false;
+        }
+      }
+
+      // Пауза при скрытии вкладки (переключение таба, сворачивание браузера, блокировка экрана)
+      document.addEventListener('visibilitychange', () => {
+        document.hidden ? handleTabHide() : handleTabShow();
+      });
+
+      // Дополнительно: пауза при потере фокуса окном (alt-tab, другое приложение)
+      window.addEventListener('blur', handleTabHide);
+      window.addEventListener('focus', handleTabShow);
     </script>
   </div>
 </section>
@@ -1190,20 +1211,19 @@
 	</div>
 	<div class="gallery-item">
 	  <img src="https://i.ibb.co/ZRgpnhTS/20260104-140535.jpg" loading="lazy" />
-	  <p class="gallery-caption">Зимние горы — наша первая поездка вместе 🏔</p>
+	  <p class="gallery-caption">Вместе в горах — там, где мы счастливы 🌄</p>
 	</div>
 	<div class="gallery-item">
 	  <img src="https://i.ibb.co/skCdFs3/IMG-0157.avif" alt="Сердце из рук на снегу ❤️" loading="lazy" />
-	  <p class="gallery-caption">В театре ❤️</p>
-	  <img src="Сердце из рук на снегу" style="width: 100%; max-width: 800px; height: auto; display: block; margin: 0 auto 20px;;">
+	  <p class="gallery-caption">На концерте ❤️</p>
 	</div>
 	<div class="gallery-item only-phone">
 	  <img src="https://i.ibb.co/yDmGMX3/IMG-5126.avif" alt="Предложение" loading="lazy" />
-	  <p class="gallery-caption">На концерте</p>
+	  <p class="gallery-caption">В театре 💛</p>
 	</div>
 	<div class="gallery-item">
-	  <img src="https://i.ibb.co/1GMTfBZ5/IMG-7583.jpg" alt="Вместе в горах — там, где мы счастливы 🌄" loading="lazy" />
-	  <p class="gallery-caption">Предложение 🌄</p>
+	  <img src="https://i.ibb.co/1GMTfBZ5/IMG-7583.jpg" alt="Предложение 🌄" loading="lazy" />
+	  <p class="gallery-caption">Предложение 💏</p>
 	</div>
 </div>
 
